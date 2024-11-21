@@ -1,0 +1,5 @@
+// Ignorar todos los .o
+*.o
+
+// Buscar en todos los directorios
+**/*.o
