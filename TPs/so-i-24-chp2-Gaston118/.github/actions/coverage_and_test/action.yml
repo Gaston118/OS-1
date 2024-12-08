@@ -1,0 +1,42 @@
+name: "Test and coverage check"
+description: "Test and coverage check with gcovr, pass if coverage is greater than 5%"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Run coverage"
+      shell: bash
+      run: |
+        PROJECT_PATH=$(pwd)
+        ERROR_FILE_FLAG=$(pwd)/tests_errors.txt
+        CTEST_ERROR_FILE_FLAG=$(pwd)/ctest_errors.txt
+        
+        # Run tests
+        cd build
+        ctest -j$(nproc) --output-on-failure > $CTEST_ERROR_FILE_FLAG
+
+        # Run coverage 
+        lcov --capture --directory . --output-file coverage.info --exclude '../TPs/*'
+
+        # Check coverage
+        lcov --summary coverage.info
+
+        # Check if coverage is greater than 5%
+        COVERAGE=$(lcov --summary coverage.info | grep lines | awk '{print $2}' | sed 's/%//')
+
+        if [ $COVERAGE -lt 5 ]; then
+          echo "Coverage is less than 5%: $COVERAGE"
+          echo "Coverage is less than 5%: $COVERAGE" > $ERROR_FILE_FLAG
+          exit 1
+        else 
+          echo "Coverage is greater than 5%: $COVERAGE"
+          echo "NICE!"
+        fi
+
+    # Upload errors as an artifact, when failed
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: Tests or coverage errors!!!
+        path: ./tests_errors.txt
+        retention-days: 1

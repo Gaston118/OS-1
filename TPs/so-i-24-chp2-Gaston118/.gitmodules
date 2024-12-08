@@ -1,0 +1,4 @@
+[submodule "TPs/so-i-24-Gaston118"]
+	path = TPs/so-i-24-Gaston118
+	url = https://github.com/Gaston118/OS-1.git
+	branch = main

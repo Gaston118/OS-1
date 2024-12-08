@@ -1,0 +1,36 @@
+name: "Build"
+description: "Executes a compilation."
+
+runs:
+  using: "composite"
+  steps:
+    - name: Installing Conan
+      shell: bash
+      run: |
+
+        python3 -m pip install --upgrade pip
+        pip install conan
+
+        echo "Setting"
+
+        conan profile detect --force
+
+        export PATH=$PATH:~/.local/bin
+
+        conan profile detect --force
+
+        conan install . --output-folder=build --build=missing
+
+        cd build
+
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=./build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+
+        make -j$(nproc)
+
+        cd ..
+
+        echo "Build done!"
+
+
+
+

@@ -1,0 +1,10 @@
+echo hola mundo 
+
+echo hola juan
+
+dir 
+
+ls 
+
+cat ../comandos.txt
+

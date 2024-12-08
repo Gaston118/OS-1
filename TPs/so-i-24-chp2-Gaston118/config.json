@@ -1,0 +1,4 @@
+{
+	"interval":	10,
+	"metrics":	["cpu", "memory", "processes"]
+}

@@ -5,8 +5,9 @@ void response(int);
 void response(int sig_no) { printf("Linux\n"); }
 
 int main() {
-  signal(SIGINT, response);
+  
   while (1) {
+    signal(SIGINT, response);
     printf("sleeping..\n");
     sleep(1);
   }
